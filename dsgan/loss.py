@@ -5,7 +5,8 @@ from torchvision.models.vgg import vgg16, vgg19
 from model import FilterLow
 import sys
 sys.path.insert(0, './PerceptualSimilarity')
-import PerceptualSimilarity as ps
+# import PerceptualSimilarity as ps
+from PerceptualSimilarity import lpips
 
 
 def generator_loss(labels, wasserstein=False, weights=None):
@@ -45,13 +46,15 @@ class GeneratorLoss(nn.Module):
     def __init__(self, recursions=1, stride=1, kernel_size=5, use_perceptual_loss=True, wgan=False, w_col=1,
                  w_tex=0.001, w_per=0.1, gaussian=False, lpips_rot_flip=False, **kwargs):
         super(GeneratorLoss, self).__init__()
-        self.pixel_loss = nn.L1Loss()
+        self.pixel_loss = nn.L1Loss().cuda()
         self.color_filter = FilterLow(recursions=recursions, stride=stride, kernel_size=kernel_size, padding=False,
-                                      gaussian=gaussian)
-        if torch.cuda.is_available():
-            self.pixel_loss = self.pixel_loss.cuda()
-            self.color_filter = self.color_filter.cuda()
-        self.perceptual_loss = PerceptualLoss(rotations=lpips_rot_flip, flips=lpips_rot_flip)
+                                      gaussian=gaussian).cuda()
+        # if torch.cuda.is_available():
+        #     self.pixel_loss = self.pixel_loss.cuda()
+        #     self.color_filter = self.color_filter.cuda()
+        # self.perceptual_loss = PerceptualLoss(rotations=lpips_rot_flip, flips=lpips_rot_flip) #옛버전 쓴거같음.최신버전 가져오려면 아래처럼 선언했어야함
+        self.perceptual_loss = lpips.LPIPS(net='vgg',version='0.1', eval_mode=False)
+
         self.use_perceptual_loss = use_perceptual_loss
         self.wasserstein = wgan
         self.w_col = w_col
@@ -67,16 +70,25 @@ class GeneratorLoss(nn.Module):
         self.last_tex_loss = generator_loss(tex_labels, wasserstein=self.wasserstein)
         # Perception Loss
         self.last_per_loss = self.perceptual_loss(out_images, target_images)
+        self.last_per_loss= self.last_per_loss.squeeze()
         # Color Loss
         self.last_col_loss = self.color_loss(out_images, target_images)
         loss = self.w_col * self.last_col_loss + self.w_tex * self.last_tex_loss
         if self.use_perceptual_loss:
+            self.last_per_loss = self.last_per_loss.mean(dim=0,keepdim=False) #mhkim
             loss += self.w_per * self.last_per_loss
         return loss
+    def gram_matrix(self, y):
+        (b, ch, h, w) = y.size()
+        features = y.view(b, ch, w * h)
+        features_t = features.transpose(1, 2)
+        gram = features.bmm(features_t) / (ch * h * w)
+        return gram
 
     def color_loss(self, x, y):
-        return self.pixel_loss(self.color_filter(x), self.color_filter(y))
-
+        # print(x.shape, y.shape) #잘나옴체크
+        return_val =  self.pixel_loss(self.color_filter(x), self.color_filter(y))
+        return return_val
     def rgb_loss(self, x, y):
         return self.pixel_loss(x.mean(3).mean(2), y.mean(3).mean(2))
 

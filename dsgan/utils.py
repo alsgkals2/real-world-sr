@@ -1,3 +1,4 @@
+
 from PIL import Image
 from torchvision.transforms import Compose, ToTensor, ToPILImage, CenterCrop, Resize
 import numpy as np
@@ -7,6 +8,53 @@ import math
 
 # set random seed for reproducibility
 np.random.seed(0)
+
+
+
+class Logger(object):
+    def __init__(self):
+        import sys
+        self.terminal = sys.stdout  #stdout
+        self.file = None
+
+    def open(self, file, mode=None):
+        if mode is None: mode ='w'
+        self.file = open(file, mode)
+
+    def write(self, message, is_terminal=1, is_file=1 ):
+        if '\r' in message: is_file=0
+
+        if is_terminal == 1:
+            self.terminal.write(message)
+            self.terminal.flush()
+            #time.sleep(1)
+
+        if is_file == 1:
+            self.file.write(message)
+            self.file.flush()
+
+    def flush(self):
+        # this flush method is needed for python 3 compatibility.
+        # this handles the flush command by doing nothing.
+        # you might want to specify some extra behavior here.
+        pass
+
+
+
+# fix random seeds
+def set_seeds(seed=42):
+    import os
+    import random
+    os.environ['PYTHONHASHSEED'] = str(seed)
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    if torch.cuda.is_available():
+        torch.backends.cudnn.deterministic = True
+        torch.backends.cudnn.benchmark = True
+    os.environ["PYTHONHASHSEED"] = str(seed)
 
 
 def is_image_file(filename):

@@ -1,11 +1,11 @@
-df2k:
+div2k:
   jpeg:
     hr:
-      train: '../datasets/DF2K/jpeg/train_HR'
-      valid: '../datasets/DF2K/jpeg/valid_HR'
+      train: '../datasets/DIV2K/DIV2K_train_HR'
+      valid: '../datasets/DIV2K/DIV2K_valid_HR'
     lr:
-      train: '../datasets/DF2K/jpeg/train_LR'
-      valid: '../datasets/DF2K/jpeg/valid_LR'
+      train: '../datasets/DIV2K/DIV2K_train_HR'
+      valid: '../datasets/DIV2K/DIV2K_valid_HR'
   gaussian:
     hr:
       train: '../datasets/DF2K/gaussian/train_HR'
@@ -15,29 +15,89 @@ df2k:
       valid: '../datasets/DF2K/gaussian/valid_LR'
   clean:
     hr:
-      train: '../datasets/DF2K/clean/train_HR'
-      valid: '../datasets/DF2K/clean/valid_HR'
+      train: '../datasets/DIV2K/clean/DIV2K_train_HR'
+      valid: '../datasets/DIV2K/clean/DIV2K_valid_HR'
     lr:
-      train: '../datasets/DF2K/clean/train_LR'
-      valid: '../datasets/DF2K/clean/valid_LR'
-aim2019:
-  sdsr:
-    source: '../datasets/AIM2019/TrainingSource'
-    target: '../datasets/AIM2019/TrainingSource'
-    valid:
-  tdsr:
-    source: '../datasets/AIM2019/TrainingSource'
-    target: '../datasets/AIM2019/DIV2K_train_HR'
-    valid:
-dped:
-  clean:
+      train: '../datasets/DIV2K/clean/DIV2K_train_LR/X4'
+      valid: '../datasets/DIV2K/clean/DIV2K_valid_LR/X4'
+set5:
+  jpeg:
     hr:
-      train: '../datasets/DPED/train/iphone'
-      valid: '../datasets/DPED/test/iphone'
+      # train: '../datasets/Set5/origin/train_HR'
+      valid: '../datasets/Set5/origin/HR'
     lr:
-      train:
-      valid:
-datasets:
-  df2k: '../datasets/DF2K' 
-  aim2019: '../datasets/AIM2019'
-  dped: '../datasets/DPED'
+      # train: '../datasets/Set5/origin/train_LR'
+      valid: '../datasets/Set5/origin/LR'
+  gaussian:
+    hr:
+      # train: '../datasets/Set5/gaussian/train_HR'
+      valid: '../datasets/Set5/gaussian/HR'
+    lr:
+      # train: '../datasets/Set5/gaussian/train_LR'
+      valid: '../datasets/Set5/gaussian/LR'
+set14:
+  jpeg:
+    hr:
+      # train: '../datasets/Set14/origin/train_HR'
+      valid: '../datasets/Set14/origin/HR'
+    lr:
+      # train: '../datasets/Set14/origin/train_LR'
+      valid: '../datasets/Set14/origin/LR'
+  gaussian:
+    hr:
+      # train: '../datasets/Set14/gaussian/train_HR'
+      valid: '../datasets/Set14/gaussian/HR'
+    lr:
+      # train: '../datasets/Set14/gaussian/train_LR'
+      valid: '../datasets/Set14/gaussian/LR'
+bsd100:
+  jpeg:
+    hr:
+      # train: '../datasets/BSD100/origin/train_HR'
+      valid: '../datasets/BSD100/origin/HR'
+    lr:
+      # train: '../datasets/BSD100/origin/train_LR'
+      valid: '../datasets/BSD100/origin/LR'
+  gaussian:
+    hr:
+      # train: '../datasets/BSD100/gaussian/train_HR'
+      valid: '../datasets/BSD100/gaussian/HR'
+    lr:
+      # train: '../datasets/BSD100/gaussian/train_LR'
+      valid: '../datasets/BSD100/gaussian/LR'
+urban100:
+  jpeg:
+    hr:
+      # train: '../datasets/Urban100/origin/train_HR'
+      valid: '../datasets/Urban100/origin/HR'
+    lr:
+      # train: '../datasets/Urban100/origin/train_LR'
+      valid: '../datasets/Urban100/origin/LR'
+  gaussian:
+    hr:
+      # train: '../datasets/Urban100/gaussian/train_HR'
+      valid: '../datasets/Urban100/gaussian/HR'
+    lr:
+      # train: '../datasets/Urban100/gaussian/train_LR'
+      valid: '../datasets/Urban100/gaussian/LR'
+# aim2019:
+#   sdsr:
+#     source: '../datasets/AIM2019/TrainingSource'
+#     target: '../datasets/AIM2019/TrainingSource'
+#     valid:
+#   tdsr:
+#     source: '../datasets/AIM2019/TrainingSource'
+#     target: '../datasets/AIM2019/DIV2K_train_HR'
+#     valid:
+# dped:
+#   clean:
+#     hr:
+#       train: '../datasets/DPED/train/iphone'
+#       valid: '../datasets/DPED/test/iphone'
+#     lr:
+#       train:
+#       valid:
+# datasets:
+#   df2k: '../datasets/DF2K' 
+#   aim2019: '../datasets/AIM2019'
+#   dped: '../datasets/DPED'
